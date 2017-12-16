@@ -1,3 +1,4 @@
+# gets the markdown text and returns it
 import requests
 from bs4 import BeautifulSoup
 
