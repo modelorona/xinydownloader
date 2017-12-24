@@ -1,6 +1,6 @@
-import requests
-import json
-import time
+from requests import put, get
+from json import dumps, loads
+from time import time
 
 
 class FirebaseHelper:
@@ -16,7 +16,7 @@ class FirebaseHelper:
             the database link
             :param database
         """
-        self.cur_timestamp = int(time.time())
+        self.cur_timestamp = int(time())
         self.db_link = database
 
     def get_cur_timestamp(self):
@@ -34,14 +34,14 @@ class FirebaseHelper:
             :param timestamp: the epoch time to send to the database
             :return: the http code
         """
-        return requests.put(self.db_link + '/last_edit_timestamp.json', json.dumps(timestamp)).status_code
+        return put(self.db_link + '/last_edit_timestamp.json', dumps(timestamp)).status_code
 
     def get_db_timestamp(self):
         """
             Retrieves the last_edit_timestamp entry from the database
             :return: Datetime object representing the timestamp
         """
-        return int(requests.get(self.db_link + '/last_edit_timestamp.json').text)
+        return int(get(self.db_link + '/last_edit_timestamp.json').text)
 
     def get_lang_list(self):
         """
@@ -49,10 +49,10 @@ class FirebaseHelper:
             :return: list of languages in order from database if request passed. Sorted in alphabetical order
             :return: status code of request if failed
         """
-        data = requests.get(self.db_link + '/languages.json?shallow=true')
+        data = get(self.db_link + '/languages.json?shallow=true')
         # if status code is 200 aka ok, return the data as a list sorted by alphabetical order
         if data.status_code == 200:
-            language_list = sorted([key for key in json.loads(data.content)])
+            language_list = sorted([key for key in loads(data.content)])
             return language_list
         # else return None
         return None
@@ -64,7 +64,7 @@ class FirebaseHelper:
             :return: the text that is mapped to the language_name parameter
             :return: None if language does not exist
         """
-        data = requests.get(self.db_link + '/languages/' + language_name + '.json')
+        data = get(self.db_link + '/languages/' + language_name + '.json')
         if data.status_code == 200:
             return data.content.strip()
         return None
@@ -78,7 +78,7 @@ class FirebaseHelper:
         failed = {}
         # parameter can have n amount of values so we must loop
         for language, text in language_dict.items():
-            data = requests.put(self.db_link + '/languages/' + language + '.json', json.dumps(text))
+            data = put(self.db_link + '/languages/' + language + '.json', dumps(text))
             if data.status_code != 200:
                 failed[language] = data.status_code + ': ' + data.content
         return failed if len(failed) > 0 else 200
