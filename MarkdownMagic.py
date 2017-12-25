@@ -2,25 +2,26 @@
 from uuid import uuid4
 
 
-def do_work(text, previous_details={}):
+def do_work(text, previous_id=None):
     """
         Does a lot of work. Gets the authors, content, and description with shitty parsing
         of the markdown. Will change to use regex later.
         :param text: the markdown text that will get mangled
-        :param previous_details: a dictionary which will contain the previous details of the current text
+        :param previous_id: a hex which will contain the previous details of the current text
         in case needed
         :return: a dictionary with all the information on the language that is taken from the text
     """
     return_object = dict()
     # the id of the data should be unique. easy to generate as well
-    return_object.update({"id": uuid4().hex})
+    if previous_id is None:
+        return_object.update({"id": uuid4().hex})
+    else:
+        return_object.update({"id": previous_id})
     contributors = {}
     text = str(text)
-    # print(text)
     text = text.split('\n')
 
     # re will have to wait
-    # let's get contributors the hard way
     for line in text:
         if line.startswith('    - [') and line.endswith(']'):
             split_line = line.split(',')
@@ -56,8 +57,6 @@ def do_work(text, previous_details={}):
 
     description = "\n".join(description).split('---')[1].strip()
     return_object.update({"description": description})
-
     # fuck the finishing words and the learn now for now
-
     return return_object
 
