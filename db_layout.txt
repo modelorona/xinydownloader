@@ -1,0 +1,20 @@
+language name:
+    id:
+    short description:
+    formatted content (basically everything in the code section:
+    ?finishing words:?
+    ?learn more:?
+
+authors:
+    author:
+        works:
+            id1
+            id2
+            etc
+        site:
+
+last_edit_timestamp:
+
+about_app:
+
+?last_id:?
