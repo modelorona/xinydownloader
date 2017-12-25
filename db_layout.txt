@@ -1,13 +1,17 @@
 language name:
-    id:
-    short description:
-    formatted content (basically everything in the code section:
+    id: done
+    authors: done
+        name: site
+        name: site
+        etc:  etc
+    short description: done
+    formatted content (basically everything in the code section): done
     ?finishing words:?
     ?learn more:?
 
 authors:
     author:
-        works:
+        works: done after everything
             id1
             id2
             etc
