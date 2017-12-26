@@ -1,6 +1,7 @@
 # completly abstracts the sending to the firebase database
-import requests
 import json
+
+import requests
 
 
 def send_to_db(location, data):

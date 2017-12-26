@@ -1,10 +1,10 @@
 # "main" file. gets the links and their data and sends to the db
-import requests
-import sys
 import html
-import specific_file_downloader
-import send_to_db
+
+import requests
 from bs4 import BeautifulSoup
+
+from legacy import send_to_db, specific_file_downloader
 
 link = "https://github.com/adambard/learnxinyminutes-docs"
 gh = "https://github.com"
@@ -22,7 +22,7 @@ for link in all_links:
         language_name = html.unescape(str(link).split('/')[::-1][0].split('.')[0])
         full_link = gh + link
         file_contents = specific_file_downloader.get_contents(full_link)
-        send_to_db.send_to_db('languages/'+language_name, file_contents)
+        send_to_db.send_to_db('languages/' + language_name, file_contents)
         # break
 
 # print(markdown_links)
