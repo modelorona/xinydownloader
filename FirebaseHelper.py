@@ -29,7 +29,7 @@ class FirebaseHelper:
     def set_db_link(self, new_link):
         self.db_link = new_link
 
-    def update_db_timestamp(self, timestamp):
+    def upd_db_timestamp(self, timestamp):
         """
             Updates the Firebase database timestamp entry with the parameter
             :param timestamp: the epoch time to send to the database
