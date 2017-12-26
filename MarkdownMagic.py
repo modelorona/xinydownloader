@@ -23,9 +23,9 @@ def do_work(text, previous_id=None):
 
     # re will have to wait
     for line in text:
-        if line.startswith('    - [') and line.endswith(']'):
-            split_line = line.split(',')
-            contributors[split_line[0][8:-1]] = split_line[1][2:-2]
+        if line.strip().startswith('- [') and line.strip().endswith(']'):
+            split_line = line.strip().split(',')
+            contributors[split_line[0][3:-1].replace('.', '')] = split_line[1][2:-2]  # firebase doesnt like weird characters in the key name
     # now we have contributors
     return_object.update({"contributors": contributors})
 
