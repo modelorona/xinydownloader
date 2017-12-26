@@ -1,8 +1,11 @@
 # purpose of this is to abstract some of the github requests stuff. decided not to use their api
 # since it would take more time to set up (although it would be worth looking into later)
-from requests import get
-from bs4 import BeautifulSoup
+# from github import Github
 from html import unescape
+from json import loads
+
+from bs4 import BeautifulSoup
+from requests import get
 
 
 class GithubHelper:
@@ -41,3 +44,28 @@ class GithubHelper:
                 return get(self.gh + link).text
         return None
 
+    def get_commits_since(self, last_time):
+        """
+            Gets all commits from the xinyminutes repo from the last timestamp onwards
+            :param last_time: the timestamp in iso 8061 format
+            :return: the list of commits in dictionary form
+        """
+        return loads(get('https://api.github.com/repos/adambard/learnxinyminutes-docs/commits', params={
+            "since": last_time
+        }).content)
+
+    def get_commit_changes(self, commit_sha): # todo: fix this shit when possible. important to update only some languages, not all
+        """
+            Sees which files were changed and creates a list of languages that should be updated
+            :param commit_sha: the commit sha to look up
+            :return: list of languages to update
+        """
+        langs_to_update = []
+        data = get('https://api.github.com/repos/adambard/learnxinyminutes-docs/commits/' + str(commit_sha)).json()
+        # now parse the data and see what was updated
+        # https://developer.github.com/v3/repos/commits/#get-a-single-commit
+        # files = data['files']
+
+        # print(data)
+
+        return data
