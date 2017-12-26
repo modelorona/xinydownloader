@@ -1,6 +1,7 @@
-from requests import put, get
 from json import dumps, loads
 from time import time
+
+from requests import put, get
 
 
 class FirebaseHelper:
@@ -69,16 +70,27 @@ class FirebaseHelper:
             return data.content.strip()
         return None
 
-    def update_db_langs(self, language_dict):
+    def upd_auth_info(self, author): # todo: think about doing this
+        """
+            Updates the single author's info aka their name and link and publications
+            :param author:
+            :return:
+        """
+        return self.db_link + author
+
+    def upd_db_lang(self, language_dict, language_name):
         """
             Sends the n-amount of languages and their mapped text to the database
             :param language_dict: contains the n-mapped languages to respective language text
+            :param language_name: name of the language
             :return: 200 to emulate http success else a dictionary containing failed language updates and their reason
         """
         failed = {}
-        # parameter can have n amount of values so we must loop
-        for language, text in language_dict.items():
-            data = put(self.db_link + '/languages/' + language + '.json', dumps(text))
-            if data.status_code != 200:
-                failed[language] = data.status_code + ': ' + data.content
+
+        data = put(self.db_link + '/languages/' + language_name + '.json', dumps(language_dict))
+        if data.status_code != 200:
+            failed[language_name] = {
+                "status_code": data.status_code,
+                "content": data.content
+            }
         return failed if len(failed) > 0 else 200

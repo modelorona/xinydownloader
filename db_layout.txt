@@ -9,16 +9,16 @@ language name:
     ?finishing words:?
     ?learn more:?
 
-authors:
+?authors:
     author:
         works: done after everything
             id1
             id2
             etc
-        site:
+        site:?
 
-last_edit_timestamp:
+last_edit_timestamp: done
 
-about_app:
+?about_app:?
 
 ?last_id:?
