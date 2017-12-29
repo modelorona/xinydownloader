@@ -1,3 +1,7 @@
+##########
+old layout
+##########
+
 language name:
     id: done
     authors: done
@@ -22,3 +26,18 @@ last_edit_timestamp: done
 ?about_app:?
 
 ?last_id:?
+
+
+##########
+new layout
+##########
+
+language name:
+    id: uuid.hex.toString
+    html: html.toString
+
+authors: don't think it will be necessary
+
+last_edit_timestamp: epoch time
+
+last_commit: possibly if api proves to be a cUNt

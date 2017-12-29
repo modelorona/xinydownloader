@@ -94,3 +94,10 @@ class FirebaseHelper:
                 "content": data.content
             }
         return failed if len(failed) > 0 else 200
+
+    def upd_lang_html(self, lang, html):
+        data = put(self.db_link + '/languages/' + lang + '.json', dumps({
+            'html': html
+        }))
+
+        return data.status_code

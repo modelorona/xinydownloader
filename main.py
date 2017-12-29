@@ -1,17 +1,18 @@
 #!/usr/bin/python3.6.3
 import logging
 from logging.handlers import RotatingFileHandler
-from os import environ as env
-from os.path import join, dirname
 from sys import exit
 from time import time
 
 # from datetime import datetime as dt
 from dotenv import load_dotenv
+from os import environ as env
+from os.path import join, dirname
 
 import FirebaseHelper as Firebase
 import GithubHelper as Github
 import MarkdownMagic as Markdown
+import xiny as XinY
 
 app_log = logging.getLogger('root')
 
@@ -35,7 +36,6 @@ if __name__ == "__main__":
     app_log.setLevel(logging.DEBUG)
     app_log.addHandler(my_handler)
 
-
     # set up environmental variable control
     dotenv_path = join(dirname(__file__), '.env')
     load_dotenv(dotenv_path)
@@ -50,13 +50,22 @@ if __name__ == "__main__":
         app_log.error(str(github) + str(firebase))
         exit(1)
 
+    xiny = XinY.XinY()
+
+    links = github.get_md_links()
+    for lang, link in links.items():
+        lang_html = xiny.get_html(lang)
+        print(firebase.upd_lang_html(lang, lang_html))
+
+
+
     # todo: implement commit checking here to see new updates. for now, just do a wide update of all
     # commits = (github.get_commits_since(dt.utcfromtimestamp(1512156708)))
 
     # base program structure
     # script runs, updates all languages, updates the timestamp, and leaves
     # shouldn't crash but shit if it do well shit
-    update_all(github, firebase)
+    # update_all(github, firebase)
     current_time = int(time()) # the epoch time, converted from floating point to int
     t_r_code = firebase.upd_db_timestamp(current_time)
     if t_r_code != 200:
