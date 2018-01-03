@@ -11,19 +11,18 @@ from os.path import join, dirname
 
 import FirebaseHelper as Firebase
 import GithubHelper as Github
-import MarkdownMagic as Markdown
 import xiny as XinY
 
 app_log = logging.getLogger('root')
 
 
-def update_all(gh, fb):
-    links = gh.get_md_links()
-    for lang, link in links.items():
-        content = gh.get_md_content(links.get(lang))
-        lang_data = Markdown.do_work(content)
-        resp = fb.upd_db_lang(lang_data, lang)
-        app_log.info(resp)
+# def update_all(gh, fb):
+#     links = gh.get_md_links()
+#     for lang, link in links.items():
+#         content = gh.get_md_content(links.get(lang))
+#         lang_data = Markdown.do_work(content)
+#         resp = fb.upd_db_lang(lang_data, lang)
+#         app_log.info(resp)
 
 if __name__ == "__main__":
     # set up logging
@@ -43,6 +42,7 @@ if __name__ == "__main__":
     # initialize respective helpers
     firebase = Firebase.FirebaseHelper(env.get('firebase_link', None))
     github = Github.GithubHelper(env.get('github_link', None))
+    xiny = XinY.XinY()
 
     # exit the program if there is no github link set and log it as well
     if github is None or firebase is None:
@@ -50,14 +50,10 @@ if __name__ == "__main__":
         app_log.error(str(github) + str(firebase))
         exit(1)
 
-    xiny = XinY.XinY()
-
-    links = github.get_md_links()
-    for lang, link in links.items():
-        lang_html = xiny.get_html(lang)
-        print(firebase.upd_lang_html(lang, lang_html))
-
-
+    # links = github.get_md_links()
+    # for lang, link in links.items():
+    #     lang_html = xiny.get_html(lang)
+    #     print(firebase.upd_lang_html(lang, lang_html))
 
     # todo: implement commit checking here to see new updates. for now, just do a wide update of all
     # commits = (github.get_commits_since(dt.utcfromtimestamp(1512156708)))

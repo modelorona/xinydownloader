@@ -1,3 +1,4 @@
+dotenv
 requests==2.18.4
 beautifulsoup4==4.6.0
 mistune==0.8.3

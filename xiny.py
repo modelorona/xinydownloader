@@ -1,4 +1,4 @@
-import subprocess
+# import subprocess
 
 from bs4 import BeautifulSoup
 from requests import get
@@ -31,9 +31,9 @@ class XinY:
         # get the main content
         doc_div = soup.find("div", {'id': 'doc'})
         # and add it
-        html_to_return.append('<!-- htmlmin:ignore -->')
+        # html_to_return.append('<!-- htmlmin:ignore -->')
         html_to_return.append(str(doc_div))
-        html_to_return.append('<!-- htmlmin:ignore -->')
+        # html_to_return.append('<!-- htmlmin:ignore -->')
         # html_to_return.append(str(soup.get_text()))
         # close out body tag
         html_to_return.append('</body>')
@@ -45,10 +45,11 @@ class XinY:
             temp.write(" ".join(html_to_return).strip())
 
         # now call nodejs script to minify that file
-        result = subprocess.run(['node', 'minify.js'], stdout=subprocess.PIPE)
+        # todo: temporarily disabled due to some being minified wrong
+        # result = subprocess.run(['node', 'minify.js'], stdout=subprocess.PIPE)
 
         # and now return it as one big ass string
-        return result.stdout.decode('utf8').strip()
+        return " ".join(html_to_return).strip()
 
     def get_css(self):
         css_to_return = list()
