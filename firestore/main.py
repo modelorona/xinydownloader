@@ -25,11 +25,11 @@ if __name__ == '__main__':
     lang_ref = db.collection(u'languages')
 
     all_langs = gh.get_md_links()
-    for lang, link in all_langs.items():
-        lang_html = xy.get_html(link)
+    for lang in all_langs.keys():
+        lang_html = xy.get_html(lang)
         save_language(lang_ref, index, lang, lang_html)
         index += 1
 
-    lang_ref.document(u'numberOfLang').set({
-        u'numberOfLang': index
-    })
+    # lang_ref.document(u'numberOfLang').set({
+    #     u'numberOfLang': index
+    # })
