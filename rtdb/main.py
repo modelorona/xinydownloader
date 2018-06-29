@@ -1,17 +1,15 @@
 #!/usr/bin/python3.6.3
 import logging
 from logging.handlers import RotatingFileHandler
+from os import environ as env
+from os.path import join, dirname
 from sys import exit
 from time import time
 
 # from datetime import datetime as dt
 from dotenv import load_dotenv
-from os import environ as env
-from os.path import join, dirname
 
-import FirebaseHelper as Firebase
-import GithubHelper as Github
-import xiny as XinY
+from rtdb import FirebaseHelper as Firebase, GithubHelper as Github, xiny
 
 app_log = logging.getLogger('root')
 
@@ -42,7 +40,7 @@ if __name__ == "__main__":
     # initialize respective helpers
     firebase = Firebase.FirebaseHelper(env.get('firebase_link', None))
     github = Github.GithubHelper(env.get('github_link', None))
-    xiny = XinY.XinY()
+    xiny = xiny.XinY()
 
     # exit the program if there is no github link set and log it as well
     if github is None or firebase is None:
@@ -50,11 +48,13 @@ if __name__ == "__main__":
         app_log.error(str(github) + str(firebase))
         exit(1)
 
-    # links = github.get_md_links()
-    # for lang, link in links.items():
-    #     lang_html = xiny.get_html(lang)
-    #     print(firebase.upd_lang_html(lang, lang_html))
-
+    links = github.get_md_links()
+    try:
+        for lang, link in links.items():
+            lang_html = xiny.get_html(lang)
+            print(firebase.upd_lang_html(lang, lang_html))
+    except Exception as e:
+        print(e)
     # todo: implement commit checking here to see new updates. for now, just do a wide update of all
     # commits = (github.get_commits_since(dt.utcfromtimestamp(1512156708)))
 
