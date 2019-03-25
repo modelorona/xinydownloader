@@ -12,12 +12,12 @@ def save_language(ref, pos, language, html):
     })
 
 
-
 if __name__ == '__main__':
     cred = credentials.Certificate(u'firebase.json')
-    firebase_admin.initialize_app(cred)
+    firebase_admin.initialize_app(cred, {
+        'projectId': 'xinyu-9c4c9'
+    })
     db = firestore.client()
-    index = 0
 
     xy = xiny.XinY()
     gh = GithubHelper.GithubHelper()
@@ -25,10 +25,9 @@ if __name__ == '__main__':
     lang_ref = db.collection(u'languages')
 
     all_langs = gh.get_md_links()
-    for lang in all_langs.keys():
+    for index, lang in enumerate(all_langs.keys()):
         lang_html = xy.get_html(lang)
         save_language(lang_ref, index, lang, lang_html)
-        index += 1
 
     # lang_ref.document(u'numberOfLang').set({
     #     u'numberOfLang': index
