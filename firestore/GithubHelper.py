@@ -7,7 +7,7 @@ from requests import get
 class GithubHelper:
     def __init__(self):
         self.link = 'https://github.com/adambard/learnxinyminutes-docs'
-        self.gh = "https://github.com"
+        self.gh = 'https://github.com'
 
     def get_md_links(self):
         """

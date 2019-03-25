@@ -4,8 +4,8 @@ from requests import get
 
 class XinY:
     def __init__(self):
-        self.original_link = "https://learnxinyminutes.com/docs"
-        self.css_original_link = "https://raw.githubusercontent.com/adambard/learnxinyminutes-site/master/source/css"
+        self.original_link = 'https://learnxinyminutes.com/docs'
+        self.css_original_link = 'https://raw.githubusercontent.com/adambard/learnxinyminutes-site/master/source/css'
         self.css = self.get_css()  # generate the css as soon as object is created so we can use it over and over
 
     def get_html(self, language):
@@ -15,8 +15,8 @@ class XinY:
         html_to_return.append('<html lang="en">')
         html_to_return.append('<head>')
         # request the html and pass it to bs4
-        data = get(self.original_link + '/' + language).content
-        soup = BeautifulSoup(data, "html.parser")
+        data = get('{}/{}'.format(self.original_link, language)).content
+        soup = BeautifulSoup(data, 'html.parser')
         # add in the meta tags
         for meta in soup.find_all('meta'):
             html_to_return.append(str(meta))
@@ -27,7 +27,7 @@ class XinY:
         # add in start of body tag
         html_to_return.append('<body>')
         # get the main content
-        doc_div = soup.find("div", {'id': 'doc'})
+        doc_div = soup.find('div', {'id': 'doc'})
         # and add it
         # html_to_return.append('<!-- htmlmin:ignore -->')
         html_to_return.append(str(doc_div))
@@ -40,14 +40,14 @@ class XinY:
 
         # now write it to a local file
         # with open('temp.html', 'w') as temp:
-        #     temp.write(" ".join(html_to_return).strip())
+        #     temp.write(' '.join(html_to_return).strip())
 
         # now call nodejs script to minify that file
         # todo: temporarily disabled due to some being minified wrong
         # result = subprocess.run(['node', 'minify.js'], stdout=subprocess.PIPE)
 
         # and now return it as one big ass string
-        return " ".join(html_to_return).strip()
+        return ' '.join(html_to_return).strip()
 
     def get_css(self):
         css_to_return = list()
@@ -58,9 +58,9 @@ class XinY:
             if sheet == 'screen.css':
                 file = get('https://learnxinyminutes.com/css/screen.css').text
             else:
-                file = get(self.css_original_link + '/' + sheet).text
+                file = get('{}/{}'.format(self.css_original_link, sheet)).text
             content = '<style>{}</style>'.format(str(file).strip())
             css_to_return.append(content)
             css_to_return.append('\n')
 
-        return " ".join(css_to_return).strip()
+        return ' '.join(css_to_return).strip()
