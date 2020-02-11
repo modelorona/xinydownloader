@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+from time import sleep
 
 from firestore import xiny, GithubHelper
 
@@ -26,6 +27,8 @@ if __name__ == '__main__':
 
     all_langs = gh.get_md_links()
     for index, lang in enumerate(all_langs.keys()):
+        print(lang, index)
+        sleep(1)  # as to not flood with too many requests
         lang_html = xy.get_html(lang)
         save_language(lang_ref, index, lang, lang_html)
 
