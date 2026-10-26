@@ -22,4 +22,4 @@ requests==2.33.0
 rsa==4.7
 six==1.14.0
 soupsieve==2.9
-urllib3==2.7.0
+urllib3==2.8.0
